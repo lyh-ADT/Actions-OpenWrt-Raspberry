@@ -110,9 +110,10 @@ jobs:
 
     - name: Update feeds
       run: |
-          cd openwrt && sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
-          cd openwrt && ./scripts/feeds update -a
-          cd openwrt && ./scripts/feeds install -a
+          cd openwrt 
+          sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
