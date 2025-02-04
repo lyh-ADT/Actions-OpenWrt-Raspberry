@@ -40,15 +40,10 @@ jobs:
     steps:
     - name: Create more disk space
       run: |-
-          # https://github.com/actions/runner-images/issues/2840#issuecomment-790492173
           # https://github.com/actions/runner-images/issues/2840#issuecomment-2272410832
-          sudo rm -rf /usr/share/dotnet
           # Remove software and language runtimes we're not using
-          sudo rm -rf /opt/ghc
           sudo rm -rf \
-          sudo rm -rf "/usr/local/share/boost"
             "$AGENT_TOOLSDIRECTORY" \
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
             /opt/google/chrome \
             /opt/microsoft/msedge \
             /opt/microsoft/powershell \
