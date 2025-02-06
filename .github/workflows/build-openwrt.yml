@@ -38,8 +38,6 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:  
-
-   
     - name: Checkout
       uses: actions/checkout@main
 
@@ -47,16 +45,9 @@ jobs:
       run: |
         sudo mkdir -p /workdir
         sudo chown $USER:$GROUPS /workdir
-        mv ./* /workdir
-        ls
+        mv ./{.[!.],}** /workdir
+        ls -a
 
-
-    - name: Load custom configuration
-      run: |
-        pwd
-        [ -e /workdir/$CONFIG_FILE ] && mv /workdir/$CONFIG_FILE .config
-        ls
-    
     # build
 
     - name: Create more disk space
@@ -79,6 +70,19 @@ jobs:
           /usr/share/swift
         df -h /
 
+    - name: Clone source code
+      run: |
+        pwd
+        ls -a
+        df -hT $PWD
+        git clone $REPO_URL -b $REPO_BRANCH .
+
+    - name: Load custom configuration
+      run: |
+        pwd
+        [ -e /workdir/$CONFIG_FILE ] && mv /workdir/$CONFIG_FILE .config
+        ls -a
+
     - name: Space cleanup and Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -95,10 +99,7 @@ jobs:
         sudo -E apt clean
         sudo -E timedatectl set-timezone "Asia/Shanghai"
 
-    - name: Clone source code
-      run: |
-        df -hT $PWD
-        git clone $REPO_URL -b $REPO_BRANCH .
+    
 
     - name: Update feeds
       run: |
