@@ -77,6 +77,12 @@ jobs:
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH .
 
+    - name: Cache
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: 'true'
+        prefix: ${{ github.workspace }}
+
     - name: Load custom configuration
       run: |
         pwd
