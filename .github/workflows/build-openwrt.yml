@@ -88,6 +88,9 @@ jobs:
         pwd
         [ -e /workdir/$CONFIG_FILE ] && mv /workdir/$CONFIG_FILE .config
         ls -a
+    
+
+
 
     - name: Space cleanup and Initialization environment
       env:
@@ -113,8 +116,20 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
 
-    # - name: Generate configuration file
-    #   run: make defconfig
+    - name: Generate Diff Config
+      run: |
+        mkdir artifact
+        make defconfig
+        ./scripts/diffconfig.sh > ./artifact/diff.config
+        cd artifact
+        echo "ARTIFACTPATH=$PWD" >> $GITHUB_ENV
+
+    - name: Upload Config
+      uses: actions/upload-artifact@main
+      with:
+        name: config
+        path: ${{ env.ARTIFACTPATH }}
+        include-hidden-files: true
 
     - name: Download packages
       run: make download -j16
